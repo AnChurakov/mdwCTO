@@ -1,0 +1,39 @@
+﻿@model IEnumerable<managerdw.Models.Stage>
+@{
+    ViewBag.Title = "Все добавленные этапы";
+    Layout = "~/Views/Shared/_PanelControl.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+
+
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Название</th>
+                                <th>Удаление</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var stage in Model)
+                            {
+                                <tr>
+                                    <td>@stage.Name</td>
+                                    <td>@Html.ActionLink("Удалить", "Delete", "Stage", new { id = stage.Id }, new { @class = "btn btn-danger btn-sm" })</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

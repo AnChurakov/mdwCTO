@@ -1,0 +1,215 @@
+﻿@model managerdw.Models.Project
+@{
+    ViewBag.Title = "Настройки проекта";
+    Layout = "~/Views/Shared/_PanelControl.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+
+
+                <ul class="nav nav-tabs customtab" role="tablist">
+                    <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#home2" role="tab"><span class="hidden-sm-up"><i class="ti-home"></i></span> <span class="hidden-xs-down">
+                        Основная информация</span></a> </li>
+                    <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#profile2" role="tab"><span class="hidden-sm-up"><i class="ti-user"></i></span> <span class="hidden-xs-down">
+                        Изменение этапа</span></a> </li>
+                    <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#messages2" role="tab"><span class="hidden-sm-up"><i class="ti-email"></i></span> <span class="hidden-xs-down">
+                        Изменение статуса</span></a> </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="home2" role="tabpanel">
+                    
+                        
+                            <div class="p-20">
+                                <label>Название</label>
+                                <input type="text" id="name" class="form-control form-material" value="@Model.Name" />
+                            </div>
+                            <div class="p-20">
+                                <label>Описание проекта</label>
+                                <textarea id="desc" class="form-control form-material">@Model.Description</textarea>
+                            </div>
+                            <div class="p-20">
+                                <label>Дата завершения</label>
+                                <input id="date" type="text" class="form-control mydatepicker form-material" value="@Model.DateComplete" />
+                            </div>
+                            <div class="p-20">
+                                <label>Стоимость</label>
+                                <input id="price" type="text" class="form-control form-material" value="@Model.Price" />
+                            </div>
+                            <div class="p-20">
+                                <input type="hidden" value="@Model.Id" id="projectid" />
+                                <button id="updateMain" class="btn btn-info">Изменить информацию</button>
+                            </div>
+                       
+                       
+                    </div>
+                    <div class="tab-pane " id="profile2" role="tabpanel">
+                        <div class="p-20">
+                            <label>Этап</label>
+                            <select class="form-control" id="StageId">
+                                <option selected>@ViewBag.CurrentStage</option>
+                                @foreach (var stage in ViewBag.Stage)
+                                {
+                                    <option value="@stage.Id">@stage.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="p-20">
+                            <input type="hidden" value="@Model.Id" id="projectid" />
+                            <button id="updateStage" class="btn btn-info">Изменить этап</button>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="messages2" role="tabpanel">
+
+                        <div class="p-20">
+                            <label>Статус</label>
+                            <select class="form-control" id="StatusId">
+                                <option selected>@ViewBag.CurrentStatus</option>
+                                @foreach (var status in ViewBag.Status)
+                                {
+                                    <option value="@status.Id">@status.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="p-20">
+                            <input type="hidden" value="@Model.Id" id="projectid" />
+                            <button id="updateStatus" class="btn btn-info">Изменить статус</button>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+  <script>
+      $(document).ready(function () {
+         
+          $(".mydatepicker").datepicker();
+
+          $("#updateStatus").click(function () {
+                
+               var projectid = $("#projectid").val();
+
+               var status = $("#StatusId").val();
+
+                 $.ajax({
+                     type: "POST",
+                     url: '@Url.Action("UpdateStatus", "Project")',
+                     data: "StatusId=" + status + "&ProjectId=" + projectid,
+                     dataType: "text",
+                     success: function (data) {
+
+                         if (data) {
+                             $.toast({
+                                 heading: 'Обновление данных',
+                                 text: 'Статус проекта успешно изменен',
+                                 position: 'top-right',
+                                 loaderBg: '#ff6849',
+                                 icon: 'success',
+                                 hideAfter: 3500,
+                                 stack: 6
+                             });
+                         }
+
+                     },
+                  
+
+                 });
+
+             });
+
+           $("#updateStage").click(function () {
+                
+               var projectid = $("#projectid").val();
+
+               var stage = $("#StageId").val();
+
+                 $.ajax({
+                     type: "POST",
+                     url: '@Url.Action("UpdateStage", "Project")',
+                     data: "StageId=" + stage + "&ProjectId=" + projectid,
+                     dataType: "text",
+                     success: function (data) {
+
+                         if (data) {
+                             $.toast({
+                                 heading: 'Обновление данных',
+                                 text: 'Этап проекта успешно изменен',
+                                 position: 'top-right',
+                                 loaderBg: '#ff6849',
+                                 icon: 'success',
+                                 hideAfter: 3500,
+                                 stack: 6
+                             });
+                         }
+
+                     },
+                  
+
+                 });
+
+             });
+
+           $("#updateMain").click(function () {
+
+                 var name = $("#name").val();
+
+                 var desc = $("#desc").val();
+
+                 var price = $("#price").val();
+
+                 var date = $("#date").val();
+
+                 var projectid = $("#projectid").val();
+
+                 $.ajax({
+                     type: "POST",
+                     url: '@Url.Action("UpdateMainInfo", "Project")',
+                     data: "name=" + name + "&desc=" + desc + "&price=" + price + "&date=" + date + "&ProjectId=" + projectid,
+                     dataType: "text",
+                     success: function (data) {
+
+                    if (data) {
+                             $.toast({
+                                 heading: 'Обновление данных',
+                                 text: 'Данные проекта успешно обновлены',
+                                 position: 'top-right',
+                                 loaderBg: '#ff6849',
+                                 icon: 'success',
+                                 hideAfter: 3500,
+                                 stack: 6
+                             });
+                         }
+
+                     },
+                     error: function (xhr, status, error) {
+                         $.toast({
+                             heading: 'Обновление данных',
+                             text: 'Данные проекта не обновлены!',
+                             position: 'top-right',
+                             loaderBg: '#ff6849',
+                             icon: 'error',
+                             hideAfter: 3500
+
+                         });
+                     }
+
+                 });
+
+             });
+
+      });
+    </script>
+}
+
+
+

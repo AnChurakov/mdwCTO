@@ -1,0 +1,85 @@
+﻿@model managerdw.Models.ApplicationUser
+@{
+    Layout = "~/Views/Shared/_PanelControl.cshtml";
+    ViewBag.Title = "Настройки";
+}
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+
+
+                <div class="form-group form-material">
+                    <label class="col-md-2 control-label">Фамилия</label>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" id="lastname" value="@Model.Lastname" />
+                    </div>
+                </div>
+
+                <div class="form-group form-material">
+                    <label class="col-md-2 control-label">Имя</label>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" id="firstname" value="@Model.Firstname" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" id="updateFL" value="Обновить информацию" class="btn btn-success" />
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+      $(document).ready(function () {
+
+
+          $("#updateFL").click(function () {
+
+              var firstname = $("#firstname").val();
+
+              var lastname = $("#lastname").val();
+
+                 $.ajax({
+                     type: "POST",
+                     url: '@Url.Action("UpdateFL", "Manage")',
+                     data: "lastname=" + lastname + "&firstname=" + firstname,
+                     dataType: "text",
+                     success: function (data) {
+
+                         if (data == "true") {
+                             $.toast({
+                                 heading: 'Обновление данных',
+                                 text: 'Фамилия и имя успешно обновлены',
+                                 position: 'top-right',
+                                 loaderBg: '#ff6849',
+                                 icon: 'success',
+                                 hideAfter: 3500,
+                                 stack: 6
+                             });
+                         }
+
+                     },
+
+
+                 });
+
+             });
+
+       
+
+      });
+    </script>
+}
+
+
+

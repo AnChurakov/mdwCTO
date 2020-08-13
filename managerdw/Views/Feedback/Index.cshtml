@@ -1,0 +1,148 @@
+﻿@model managerdw.Models.Feedback
+@{
+    Layout = "~/Views/Shared/_PanelControl.cshtml";
+    ViewBag.Title = "Ваш отзыв";
+}
+
+<div class="row">
+
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">В заключение, мы хотим, чтобы вы ответили на пару вопросов.<br>С их помощь мы сможем повысить свой уровень обслуживания на более высокий</h4>
+                <h6 class="card-subtitle">Просим вас ответить на 3 вопроса предельно честно</h6>
+               
+                    <div class="floating-labels  m-t-40">
+                        <span>Поля отмеченные <sup class="text-danger">*</sup> обязательны для заполнения</span>
+
+                        <div class="form-group m-b-5 mt-5">
+                            <h4>Вы заплатили за разработку<sup class="text-danger">*</sup></h4>
+
+                            <input name="group4" type="radio" value="Меньше" id="radio_17" class="radio-col-light-green price" />
+                            <label for="radio_17">Меньше</label>
+
+                            <input name="group4" type="radio" value="Больше" id="radio_7" class="radio-col-red price" />
+                            <label for="radio_7">Больше</label>
+
+                            <input name="group4" type="radio" id="radio_49" value="Сколько ожидали" class="radio-col-green price" />
+                            <label for="radio_49">Столько, сколько ожидали</label>
+
+                        </div>
+
+
+                        <div class="form-group m-b-5 mt-5">
+                            <h4>Были соблюдены все сроки разработки и сдачи проекта?<sup class="text-danger">*</sup></h4>
+
+
+                            <input name="group5" value="Да" type="radio" id="radio_19" class="radio-col-light-green dld" />
+                            <label for="radio_19">Да</label>
+
+
+                            <input name="group5" value="Нет" type="radio" id="radio_18" class="radio-col-red dld" />
+                            <label for="radio_18">Нет</label>
+
+
+
+                        </div>
+
+                        <div class="form-group m-b-5 mt-5">
+                            <h4>Многи ли правок было внесено после сдачи проекта?<sup class="text-danger">*</sup></h4>
+
+
+                            <input name="group6" value="Да" type="radio" id="radio_21" class="radio-col-light-green edit" />
+                            <label for="radio_21">Да</label>
+
+
+                            <input name="group6" value="Нет" type="radio" id="radio_20" class="radio-col-red edit" />
+                            <label for="radio_20">Нет</label>
+
+                        </div>
+
+
+
+                        <div class="form-group m-b-5 mt-5">
+                            <textarea class="form-control comment" rows="4" id="input7"></textarea>
+                            <span class="bar"></span>
+                            <label for="input7">Если вы хотите добавить от себя еще что-то, то напишите об этом</label>
+                        </div>
+
+                        <div class="col-lg-12 col-xlg-6  ml-0 pl-0 mt-3">
+                            <input type="hidden" value="@ViewBag.ProjectId" id="ProjectId"/>
+                            <input type="button" class="btn btn-info btn-rounded" id="addFeed" value="Отправить отзыв">
+
+                        </div>
+                    </div>
+                
+            </div>
+        </div>
+
+    </div>
+
+
+
+</div>
+@section Scripts {
+
+    <script>
+        $(document).ready(function () {
+
+            $("#addFeed").click(function () {
+
+            
+                price = $(".price:checked").val();
+
+                dld = $(".dld:checked").val();
+
+                edit = $(".edit:checked").val();
+
+                comment = $(".comment").val();
+
+                projectid = $("#ProjectId").val();
+               
+                if (dld != "" && price != "" && edit != "") {
+                    console.log(projectid);
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("AddNewFeedback", "Feedback")',
+                        data: "price=" + price + "&dld=" + dld + "&edit=" + edit + "&comment=" + comment + "&ProjectId=" + projectid,
+                        dataType: "text",
+                        success: function (data) {
+
+                            if (data) {
+                                $.toast({
+                                    heading: 'Отзыв о проекте',
+                                    text: 'Ваш отзыв успешно добавлен',
+                                    position: 'top-right',
+                                    loaderBg: '#ff6849',
+                                    icon: 'success',
+                                    hideAfter: 3500,
+                                    stack: 6
+                                });
+                            }
+
+                        },
+                        error: function (xhr, status, er) {
+                            console.log(xhr + ' ' + status + ' ' + er);
+                        }
+
+
+                    });
+
+                }
+                else {
+                    $.toast({
+                        heading: 'Обязательные поля',
+                        text: 'Заполните обязательные поля для продолжения',
+                        position: 'top-right',
+                        loaderBg: '#ff6849',
+                        icon: 'error',
+                        hideAfter: 4000
+
+                    });
+                }
+            });
+
+        });
+    </script>
+}

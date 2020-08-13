@@ -1,0 +1,48 @@
+﻿@model IEnumerable<managerdw.Models.Priority>
+@{ 
+    Layout = "~/Views/Shared/_PanelControl.cshtml";
+    ViewBag.Title = "Все добавленные приоритеты";
+}
+<div class="row">
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-body">
+            
+
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Название приоритета</th>
+                            <th>Удаление</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var priority in Model)
+                        {
+                        <tr>
+                            @if (priority.Name == "Высокий")
+                            {
+                                <td><span class="label label-light-danger">@priority.Name</span></td>
+                            }
+                            else if (priority.Name == "Средний")
+                            {
+                                <td><span class="label label-light-info">@priority.Name</span></td>
+                            }
+                            else if (priority.Name == "Низкий")
+                            {
+                                <td><span class="label label-light-success">@priority.Name</span></td>
+                            }
+                            else { 
+                                <td><span class="label label-inverse">@priority.Name</span></td>
+                            }
+                            <td>@Html.ActionLink("Удалить", "Delete", "Priority", new { id = priority.Id }, new { @class = "btn btn-danger  btn-sm" })</td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

@@ -1,0 +1,125 @@
+﻿@model managerdw.Models.Project
+@{
+    Layout = "~/Views/Shared/_PanelControl.cshtml";
+    ViewBag.Title = Model.Name;
+
+}
+@if (User.IsInRole("Руководитель"))
+{
+    <div class="btn-group m-b-30">
+        <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Администрирование
+        </button>
+        <div class="dropdown-menu">
+            @Html.ActionLink("Добавить задачу", "Add", "Task", new { id = Model.Id }, new { @class = "dropdown-item" })
+            @Html.ActionLink("Добавить участника", "AddUser", "Project", new { ProjectId = Model.Id }, new { @class = "dropdown-item" })
+            @Html.ActionLink("Настройки", "Edit", "Project", new { id = Model.Id }, new { @class = "dropdown-item" })
+            @Html.ActionLink("Отзыв Клиента", "FeedbackProject", "Feedback", new { id = Model.Id }, new { @class = "dropdown-item" })
+        </div>
+    </div>
+}
+<div class="card-group">
+    <div class="card">
+        <div class="card-body">
+
+            <h4 class="card-title">Анализ требований</h4>
+            <div class="text-center">
+                <input data-plugin="knob" data-width="100" data-height="100" data-linecap=round data-fgColor="#01c0c8" value="@ViewBag.Analyze" data-skin="tron" data-angleOffset="180" data-readOnly=true data-thickness=".1" />
+            </div>
+
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Разработка дизайна</h4>
+            <div class="text-center">
+                <input data-plugin="knob" data-width="100" data-height="100" data-linecap=round data-fgColor="#01c0c8" value="@ViewBag.Design" data-skin="tron" data-angleOffset="180" data-readOnly=true data-thickness=".1" />
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Разработка функционала</h4>
+            <div class="text-center">
+                <input data-plugin="knob" data-width="100" data-height="100" data-linecap=round data-fgColor="#01c0c8" value="@ViewBag.Develop" data-skin="tron" data-angleOffset="180" data-readOnly=true data-thickness=".1" />
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Тестирование</h4>
+            <div class="text-center">
+                <input data-plugin="knob" data-width="100" data-height="100" "data-linecap=round data-fgColor="#01c0c8" value="@ViewBag.Testing" data-skin="tron" data-angleOffset="180" data-readOnly=true data-thickness=".1" />
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="row">
+
+    <div class="col-lg-5">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Общая информация</h4>
+                Статус: <span class="label label-info">@Model.Status.Name</span><br />
+                Этап: <span class="label label-info">@Model.Stages.Name</span><br>
+                Дата начала: <span class="label label-info">@Model.DateCreate</span><br>
+                Дата завершения: <span class="label label-danger">@Model.DateComplete</span><br>
+                Стоимость по договору: <span class="label label-danger">@Model.Price</span><br><br>
+
+                Описание проекта:<br>
+                @Model.Description
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-7">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Последние добавленные задачи</h4>
+                @Html.ActionLink("Все задачи", "AllTaskProject", "Task", new { id = Model.Id }, null)
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Название</th>
+                                <th>Дата начала</th>
+                                <th>Статус</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          @if(ViewBag.Tasks != null) {
+                            foreach (var task in ViewBag.Tasks)
+                            {
+                                <tr>
+                                    <td>@task.Name</td>
+                                    <td>@task.Create</td>
+                                    <td><span class="label label-info">@task.Status.Name</span></td>
+                                    <td></td>
+                                </tr>
+                            }
+                        } else {
+                           <tr>
+                               <td colspan="4">Данные отсутствуют</td>
+                           </tr>
+                        }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+}
+
+
+

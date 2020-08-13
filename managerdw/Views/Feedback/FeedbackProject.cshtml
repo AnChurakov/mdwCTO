@@ -1,0 +1,52 @@
+﻿@model managerdw.Models.Feedback
+@{
+    Layout = "~/Views/Shared/_PanelControl.cshtml";
+    ViewBag.Title = "Результаты отзыва";
+}
+
+<div class="row">
+
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">В заключение, мы хотим, чтобы вы ответили на пару вопросов.<br>С их помощь мы сможем повысить свой уровень обслуживания на более высокий</h4>
+
+                <div class="floating-labels  m-t-40">
+                
+
+                    <div class="form-group m-b-5 mt-5">
+                        <h4>Вы заплатили за разработку<sup class="text-danger">*</sup></h4>
+                        <span class="text-info">@Model.Price</span>
+                    </div>
+
+
+                    <div class="form-group m-b-5 mt-5">
+                        <h4>Были соблюдены все сроки разработки и сдачи проекта?<sup class="text-danger">*</sup></h4>
+                        <span class="text-info">@Model.Deadline</span>
+                    </div>
+
+                    <div class="form-group m-b-5 mt-5">
+                        <h4>Многи ли правок было внесено после сдачи проекта?<sup class="text-danger">*</sup></h4>
+                        <span class="text-info">@Model.Edit</span>
+                    </div>
+
+
+
+                    <div class="form-group m-b-5 mt-5">
+                        <textarea class="form-control comment" rows="4" id="input7">@Model.Comment</textarea>
+                        <span class="bar"></span>
+                       
+                    </div>
+
+                   
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+</div>

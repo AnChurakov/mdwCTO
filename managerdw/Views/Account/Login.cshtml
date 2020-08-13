@@ -1,0 +1,48 @@
+﻿@using managerdw.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Личный кабинет";
+}
+
+<section id="wrapper">
+        <div class="login-register" style="background-image:url(../assets/images/background/login-register.jpg);">
+            <div class="login-box card">
+                <div class="card-body">
+                      @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal ", role = "form" }))
+                      {
+                        @Html.AntiForgeryToken()
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                   
+                        <h3 class="box-title m-b-20">Авторизация в системе</h3>
+                        <div class="form-group ">
+                            <div class="col-xs-12">
+                             @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "E-mail" })
+                             @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })    
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                              @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Пароль" })
+                              @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                  
+                        <div class="form-group text-center m-t-20">
+                            <div class="col-xs-12">
+                                <button class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light" type="submit">Войти в личный кабинет</button>
+                            </div>
+                        </div>
+                        
+                    }
+                        
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
